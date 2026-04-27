@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+
+
+
+.font-dm-sans {
+  font-family: "DM Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.font-dm-sans-500 {
+  font-family: "DM Sans", sans-serif;
+  font-weight: 500; /* medium */
+  font-style: normal;
+}
+
+.font-dm-sans-700 {
+  font-family: "DM Sans", sans-serif;
+  font-weight: 700; /* bold */
+  font-style: normal;
+}
+
+
+
+@font-face {
+  font-family: "Clash Grotesk";
+  src: url("/src/assets/fonts/ClashGrotesk-Regular.woff2") format("woff2");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Clash Grotesk";
+  src: url("/src/assets/fonts/ClashGrotesk-Medium.woff2") format("woff2");
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "Clash Grotesk";
+  src: url("/src/assets/fonts/ClashGrotesk-Bold.woff2") format("woff2");
+  font-weight: 700;
+}
+
+
+@theme {
+  --font-clash-grotesk: "Clash Grotesk", sans-serif;
+}
+
+@font-face {
+  font-family: "Clash Display";
+  src: url("/src/assets/fonts/ClashDisplay-Regular.woff2") format("woff2");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Clash Display";
+  src: url("/src/assets/fonts/ClashDisplay-Medium.woff2") format("woff2");
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "Clash Display";
+  src: url("/src/assets/fonts/ClashDisplay-Bold.woff2") format("woff2");
+  font-weight: 700;
+}
+
+@theme {
+  --font-clash-display: "Clash Display", sans-serif;
+}
