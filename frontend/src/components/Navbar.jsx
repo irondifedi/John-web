@@ -17,6 +17,8 @@ const Navbar = () => {
             className="w-8 h-8 sm:w-10 sm:h-10"
             src={assets.john_enterprise_icon}
             alt=""
+            NavLink
+            to="/"
           />
           <p className="text-[#121212] font-clash-grotesk font-medium leading-5 tracking-[0.48px] [-webkit-text-stroke-width:0.3px] [-webkit-text-stroke-color:#121212]">
             John's <br /> Enterprise
@@ -55,7 +57,7 @@ const Navbar = () => {
             </p>
           </NavLink>
 
-          <NavLink to="/faq" className="flex flex-col items-center">
+          <NavLink to="/faqs" className="flex flex-col items-center">
             <p className="text-[rgba(18,18,18,0.6)] font-dm-sans font-normal leading-4 tracking-[-0.32px]">
               FAQ
             </p>
@@ -79,14 +81,13 @@ const Navbar = () => {
           </div>
 
           {/* Cart */}
-          <Link to="/cart" className="w-5 h-5 sm:w-6 sm:h-6">
+
+          <Link to="/cart" className="w-5 h-5 sm:w-6 sm:h-6" id="cart-icon">
             <img
               src="/cart.svg"
               alt="Cart"
               className="w-full h-full object-contain"
             />
-
-            {/* Red dot only if cart has items */}
             {getCartCount() > 0 && (
               <span className="absolute top-7 right-12 sm:top-7 sm:right-19 lg:top-7 lg:right-8 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-red-600 rounded-full border border-white"></span>
             )}
