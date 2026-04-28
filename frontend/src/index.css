@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
 
 @import "tailwindcss";
 
@@ -6,17 +6,17 @@ html {
   scroll-behavior: smooth;
 }
 
-a.active hr{
+a.active hr {
   display: block;
 }
 
-a.active p{
+a.active p {
   color: #121212;
 }
 
-@media (max-width:640px) {
-  a.active{
-    background-color: #121212;;
+@media (max-width: 640px) {
+  a.active {
+    background-color: #121212;
     color: white;
   }
 }
@@ -39,7 +39,6 @@ a.active p{
   font-style: normal;
 }
 
-
 @font-face {
   font-family: "Clash Grotesk";
   src: url("/src/assets/fonts/ClashGrotesk-Regular.woff2") format("woff2");
@@ -57,7 +56,6 @@ a.active p{
   src: url("/src/assets/fonts/ClashGrotesk-Bold.woff2") format("woff2");
   font-weight: 700;
 }
-
 
 @theme {
   --font-clash-grotesk: "Clash Grotesk", sans-serif;
@@ -85,7 +83,6 @@ a.active p{
   --font-clash-display: "Clash Display", sans-serif;
 }
 
-
 /* Hide scrollbar */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
@@ -97,13 +94,57 @@ a.active p{
 }
 
 .clip-path-card {
-  clip-path: polygon(
-    0% 0%, 
-    100% 0%, 
-    100% 85%, 
-    20% 85%, 
-    12% 100%, 
-    0% 85%
-  );
+  clip-path: polygon(0% 0%, 100% 0%, 100% 85%, 20% 85%, 12% 100%, 0% 85%);
 }
 
+/* Flying cart animation */
+.fly-to-cart {
+  position: fixed;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  animation: flyToCart 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes flyToCart {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(-50% + var(--fly-x)), calc(-50% + var(--fly-y)))
+      scale(0.1);
+    opacity: 0;
+  }
+}
+
+/* Cart shake animation */
+@keyframes cartShake {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  20% {
+    transform: rotate(-15deg);
+  }
+  40% {
+    transform: rotate(15deg);
+  }
+  60% {
+    transform: rotate(-10deg);
+  }
+  80% {
+    transform: rotate(10deg);
+  }
+}
+
+.cart-shake {
+  animation: cartShake 0.5s ease-in-out;
+}

@@ -4,8 +4,8 @@ import Home from "./pages/Home";
 import SwiftLogistics from "./pages/SwiftLogistics";
 import EasyMedia from "./pages/EasyMedia";
 import JohnStores from "./pages/JohnStores";
-import Testimonials from "./pages/Testimonials";
-import Faq from "./pages/Faq";
+import Test from "./pages/Testimonials";
+
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
@@ -15,6 +15,7 @@ import { ToastContainer, toast } from "react-toastify";
 import CartForm from "./pages/CartForm";
 import ScrollToTop from "./components/ScrollToTop";
 import About from "./components/About";
+import Faqs from "./components/Faqs";
 const App = () => {
   return (
     <div>
@@ -27,8 +28,8 @@ const App = () => {
         <Route path="/swift-logistics" element={<SwiftLogistics />} />
         <Route path="/easy-media" element={<EasyMedia />} />
         <Route path="/john-stores" element={<JohnStores />} />
-        <Route path="/testimonials" element={<Testimonials />} />
-        <Route path="/faq" element={<Faq />} />
+        <Route path="/testimonials" element={<Test />} />
+        <Route path="/faqs" element={<Faqs />} />
         <Route path="/swift-product/:productId" element={<SwiftProduct />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/cart-form" element={<CartForm />} />
