@@ -13,12 +13,10 @@ const Cart = () => {
     navigate,
   } = useContext(ShopContext);
 
-  // Search both Swift and John Stores product lists
   const findProduct = (id) =>
-    swiftProducts.find((p) => p._id === id) ||
-    johnStoresProducts.find((p) => p._id === id);
+    swiftProducts.find((p) => p._id == id) ||
+    johnStoresProducts.find((p) => p._id == id);
 
-  // Swift uses price (number), John Stores uses price.current (object)
   const getPrice = (product) =>
     typeof product.price === "object" ? product.price.current : product.price;
 
@@ -46,11 +44,17 @@ const Cart = () => {
     setCartData(tempData);
   }, [cartItems]);
 
-  // Use getPrice so both product types calculate correctly
   const subtotal = cartData.reduce((acc, item) => {
     const product = findProduct(item._id);
     return acc + (product ? getPrice(product) : 0) * item.quantity;
   }, 0);
+
+  const hasJohn = cartData.some((item) =>
+    johnStoresProducts.some((p) => p._id == item._id),
+  );
+  const hasSwift = cartData.some((item) =>
+    swiftProducts.some((p) => p._id == item._id),
+  );
 
   return (
     <div className="bg-[#FAFAFA]">
@@ -59,7 +63,6 @@ const Cart = () => {
       </div>
 
       <div className="px-4 md:px-8 py-8 sm:py-15 flex flex-col items-start gap-6">
-        {/* Text section */}
         <div className="flex flex-col items-start gap-2.5">
           <p className="text-[#2D2D2D] font-clash-grotesk text-2xl sm:text-4xl font-medium leading-7 sm:leading-12">
             Your Cart
@@ -70,7 +73,6 @@ const Cart = () => {
         </div>
 
         {cartData.length === 0 ? (
-          /* Empty cart state */
           <div className="flex flex-col items-center justify-center w-full py-20 gap-4">
             <img src="/cart.svg" alt="" className="w-16 h-16 opacity-30" />
             <p className="text-[#2D2D2D] font-clash-grotesk text-xl font-medium">
@@ -93,8 +95,6 @@ const Cart = () => {
               {cartData.map((item, index) => {
                 const product = findProduct(item._id);
                 if (!product) return null;
-
-                // Get the correct price regardless of product type
                 const price = getPrice(product);
 
                 return (
@@ -102,7 +102,6 @@ const Cart = () => {
                     key={index}
                     className="flex flex-row flex-nowrap items-start gap-2.5 p-[17px_16px] rounded-[14px] border border-[#F3F4F6] bg-white shadow-[0_1px_3px_0_rgba(0,0,0,0.1),0_1px_2px_-1px_rgba(0,0,0,0.1)] w-full"
                   >
-                    {/* Product image */}
                     <img
                       src={
                         Array.isArray(product.image)
@@ -113,7 +112,6 @@ const Cart = () => {
                       className="w-25 sm:w-36.5 h-22.5 sm:h-32.5 shrink-0 mb-0 mr-3.75 sm:mr-6.25 rounded-lg object-cover"
                     />
 
-                    {/* Middle section */}
                     <div className="flex-1 mr-3.75 sm:mr-10">
                       <p className="text-[#2D2D2D] mb-1 sm:mb-2 font-dm-sans-500 text-base sm:text-xl font-semibold leading-5.5 sm:leading-6.25 tracking-[-0.5px]">
                         {product.name}
@@ -124,7 +122,6 @@ const Cart = () => {
                         </p>
                       )}
 
-                      {/* Quantity control */}
                       <div className="flex w-22.5 sm:w-27.75 h-6.25 sm:h-7.25 gap-5 sm:gap-7.5 justify-center items-center rounded-[10px] border border-[#E5E7EB] mt-4">
                         <img
                           src="/addition.svg"
@@ -146,7 +143,6 @@ const Cart = () => {
                       </div>
                     </div>
 
-                    {/* Price + remove */}
                     <div className="flex flex-col items-end gap-10 sm:gap-17.75 w-20 sm:w-29.25">
                       <img
                         src="/cancel.svg"
@@ -232,14 +228,29 @@ const Cart = () => {
               </div>
 
               <div className="flex flex-col justify-center items-center gap-3.25 self-stretch">
-                <button
-                  onClick={() => navigate("/cart-form")}
-                  className="flex flex-col justify-center items-center self-stretch py-7.5 px-4 sm:px-38 rounded-[14px] bg-[#00A63E] cursor-pointer"
-                >
-                  <p className="text-white font-clash-grotesk text-sm sm:text-base font-medium leading-4.5">
-                    Proceed to Checkout
-                  </p>
-                </button>
+                {/* John Stores checkout button */}
+                {hasJohn && (
+                  <button
+                    onClick={() => navigate("/checkout/john-stores")}
+                    className="flex flex-col justify-center items-center self-stretch py-7.5 px-4 sm:px-38 rounded-[14px] bg-[#00A63E] cursor-pointer"
+                  >
+                    <p className="text-white font-clash-grotesk text-sm sm:text-base font-medium leading-4.5">
+                      Checkout John Stores Items
+                    </p>
+                  </button>
+                )}
+
+                {/* Swift checkout button */}
+                {hasSwift && (
+                  <button
+                    onClick={() => navigate("/checkout/swift")}
+                    className="flex flex-col justify-center items-center self-stretch py-7.5 px-4 sm:px-38 rounded-[14px] bg-[#032817] cursor-pointer"
+                  >
+                    <p className="text-white font-clash-grotesk text-sm sm:text-base font-medium leading-4.5">
+                      Checkout Swift Items
+                    </p>
+                  </button>
+                )}
 
                 <button
                   onClick={() => navigate("/swift-logistics")}

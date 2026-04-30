@@ -6,7 +6,8 @@ import { ShopContext } from "../context/ShopContext";
 const SwiftProduct = () => {
   const { productId } = useParams();
   const navigate = useNavigate();
-  const { swiftProducts, currency, addToCart } = useContext(ShopContext);
+  const { swiftProducts, johnStoresProducts, currency, addToCart } =
+    useContext(ShopContext);
   const [productData, setProductData] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [image, setImage] = useState("");
@@ -27,19 +28,19 @@ const SwiftProduct = () => {
     }, 300);
   };
 
-  const fetchProductData = async () => {
-    swiftProducts.map((item) => {
-      if (item._id === productId) {
-        setProductData(item);
-        setImage(item.image[0]);
-        return null;
-      }
-    });
+  const fetchProductData = () => {
+    // Search both swiftProducts and johnStoresProducts
+    const allProducts = [...swiftProducts, ...johnStoresProducts];
+    const found = allProducts.find((item) => item._id === productId);
+    if (found) {
+      setProductData(found);
+      setImage(found.image[0]);
+    }
   };
 
   useEffect(() => {
     fetchProductData();
-  }, [productId, swiftProducts]);
+  }, [productId, swiftProducts, johnStoresProducts]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -70,6 +71,13 @@ const SwiftProduct = () => {
     }
   };
 
+  // Normalize price — swift uses flat number, john stores uses { current, old }
+  const displayPrice =
+    productData &&
+    (typeof productData.price === "object"
+      ? productData.price.current
+      : productData.price);
+
   return productData ? (
     <div className="flex flex-col px-4 sm:px-10 lg:px-[60px] pt-8 sm:pt-16 lg:pt-[100px] pb-16 items-start gap-8 sm:gap-[60px]">
       {/* Back Button */}
@@ -98,7 +106,7 @@ const SwiftProduct = () => {
           />
 
           {/* Out of stock banner on image */}
-          {!productData?.inStock && (
+          {productData?.inStock === false && (
             <div className="absolute inset-0 rounded-[16px] sm:rounded-[25px] bg-black/40 flex items-center justify-center">
               <span className="px-5 py-2.5 rounded-full bg-[#FB2C36] text-white font-clash-grotesk text-lg font-medium">
                 Out of Stock
@@ -110,32 +118,36 @@ const SwiftProduct = () => {
         {/* Product Details */}
         <div className="flex flex-col items-start gap-5 sm:gap-[45px] w-full lg:flex-1">
           <div className="flex flex-col items-start gap-4 sm:gap-7.5 self-stretch">
-            {/* Stock Badge */}
-            <div
-              className={`rounded-full px-2.5 py-1 sm:px-3 sm:py-2 border-2 ${
-                productData?.inStock
-                  ? "bg-[#032817] border-[#032817]"
-                  : "bg-[#FB2C36] border-[#FB2C36]"
-              }`}
-            >
-              <p className="text-white font-dm-sans-700 text-xs sm:text-sm font-semibold leading-4 tracking-[-0.5px]">
-                {productData?.inStock ? "In Stock" : "Out of Stock"}
-              </p>
-            </div>
+            {/* Stock Badge — only show if inStock is explicitly defined */}
+            {productData?.inStock !== undefined && (
+              <div
+                className={`rounded-full px-2.5 py-1 sm:px-3 sm:py-2 border-2 ${
+                  productData?.inStock
+                    ? "bg-[#032817] border-[#032817]"
+                    : "bg-[#FB2C36] border-[#FB2C36]"
+                }`}
+              >
+                <p className="text-white font-dm-sans-700 text-xs sm:text-sm font-semibold leading-4 tracking-[-0.5px]">
+                  {productData?.inStock ? "In Stock" : "Out of Stock"}
+                </p>
+              </div>
+            )}
 
             {/* Product Title & Description */}
             <div className="flex flex-col items-start self-stretch gap-2 sm:gap-3.75">
               <p className="text-[#2D2D2D] font-dm-sans-700 font-extrabold text-2xl sm:text-4xl leading-8 sm:leading-11.25 tracking-[-0.5px]">
                 {productData.name}
               </p>
-              <p className="text-[#6A7282] font-dm-sans font-normal text-sm sm:text-lg leading-6 sm:leading-8">
-                {productData.description}.
-              </p>
+              {productData.description && (
+                <p className="text-[#6A7282] font-dm-sans font-normal text-sm sm:text-lg leading-6 sm:leading-8">
+                  {productData.description}.
+                </p>
+              )}
             </div>
 
             {/* Price */}
             <p className="text-[#006E3D] font-clash-grotesk font-medium text-xl sm:text-2xl leading-8.75">
-              {currency} {productData.price.toLocaleString()}
+              {currency} {displayPrice?.toLocaleString()}
             </p>
 
             {/* Size Selector */}
@@ -235,13 +247,13 @@ const SwiftProduct = () => {
             </div>
           </div>
 
-          {/* Action Buttons — sticky on mobile */}
+          {/* Action Buttons */}
           <div className="fixed sm:relative bottom-0 left-0 right-0 sm:bottom-auto flex gap-3 sm:gap-3.75 items-center px-4 sm:px-0 py-4 sm:py-0 bg-white sm:bg-transparent border-t border-[#F3F4F6] sm:border-0 z-40 sm:z-auto shadow-[0_-4px_20px_rgba(0,0,0,0.08)] sm:shadow-none">
             <button
               onClick={() => validateAndAdd("cart")}
-              disabled={!productData?.inStock}
+              disabled={productData?.inStock === false}
               className={`flex flex-1 sm:flex-none px-5 py-3.5 sm:px-15 sm:py-4 justify-center items-center rounded-[10px] border transition-all duration-200 active:scale-95 ${
-                !productData?.inStock
+                productData?.inStock === false
                   ? "border-gray-200 bg-gray-100 cursor-not-allowed"
                   : addedToCart
                     ? "border-[#00E27C] bg-[rgba(0,226,124,0.10)]"
@@ -258,10 +270,10 @@ const SwiftProduct = () => {
             </button>
 
             <button
-              disabled={!productData?.inStock}
+              disabled={productData?.inStock === false}
               onClick={() => validateAndAdd("buy")}
               className={`flex flex-1 sm:flex-none px-5 py-3.5 sm:px-15 sm:py-4 justify-center items-center rounded-[10px] transition-all duration-200 active:scale-95 ${
-                productData?.inStock
+                productData?.inStock !== false
                   ? "bg-[#032817] shadow-md text-white"
                   : "bg-gray-300 cursor-not-allowed text-gray-400"
               }`}
