@@ -104,7 +104,7 @@ const SwiftProductItem = ({ id, image, name, price, description, inStock }) => {
         <img
           src={Array.isArray(image) ? image[0] : image}
           alt={name}
-          className={`w-full h-full object-cover transition-opacity duration-200 ${
+          className={`w-full h-full object-cover rounded-t-3xl transition-opacity duration-200 ${
             !inStock ? "opacity-60" : ""
           }`}
         />
@@ -147,7 +147,7 @@ const SwiftProductItem = ({ id, image, name, price, description, inStock }) => {
 
           {/* Quantity — desktop only */}
           <div
-            className="hidden sm:flex gap-7.5 items-center"
+            className="hidden sm:flex items-center gap-4 px-3 py-1.5 justify-center rounded-[9px] border-2 border-[#E5E7EB] bg-white self-start"
             onClick={(e) => e.stopPropagation()}
           >
             <img

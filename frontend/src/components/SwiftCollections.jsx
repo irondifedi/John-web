@@ -46,7 +46,7 @@ const SwiftCollections = () => {
       <div className="flex sm:hidden w-full mb-4 gap-3 items-center">
         <button
           onClick={() => setFilterOpen(true)}
-          className="flex items-center gap-2 px-4 py-3 rounded-[12px] border border-[#00E27C] bg-[rgba(0,226,124,0.08)] flex-1 justify-center"
+          className="flex items-center gap-2 px-4 py-3 rounded-[12px] border border-white bg-[rgba(0,226,124,0.08)] flex-1 justify-center"
         >
           <svg
             width="16"
@@ -68,7 +68,7 @@ const SwiftCollections = () => {
               : selectedCategory}
           </span>
           {selectedCategory !== "All" && (
-            <span className="w-2 h-2 rounded-full bg-[#00A63E]" />
+            <span className="w-2 h-2 rounded-full bg-white" />
           )}
         </button>
 
@@ -133,8 +133,8 @@ const SwiftCollections = () => {
                   }}
                   className={`flex items-center gap-3.75 px-4 py-3.5 rounded-[12px] border cursor-pointer transition-all duration-200 ${
                     selectedCategory === cat.label
-                      ? "border-[#00E27C] bg-[#00E27C]"
-                      : "border-[#00E27C] bg-[rgba(0,226,124,0.08)]"
+                      ? "border-white bg-[#1a3227]"
+                      : "border-white bg-[rgba(0,226,124,0.08)]"
                   }`}
                 >
                   <img src={cat.icon} alt="" className="w-5 h-5" />
@@ -254,8 +254,8 @@ const SwiftCollections = () => {
                 ${index === 0 ? "gap-8.25" : "gap-7.75"}
                 ${
                   selectedCategory === cat.label
-                    ? "border-[#00E27C] bg-[#00E27C]"
-                    : "border-[#00E27C] bg-[rgba(0,226,124,0.08)]"
+                    ? "border-white bg-[#162c22]"
+                    : "border-white bg-[rgba(0,226,124,0.08)]"
                 }`}
             >
               <img src={cat.icon} alt="" />
@@ -338,7 +338,7 @@ const SwiftCollections = () => {
               </p>
               <button
                 onClick={() => setSelectedCategory("All")}
-                className="px-6 py-2.5 rounded-[10px] bg-[#032817] text-white font-dm-sans-500 text-sm"
+                className="px-6 py-2.5 rounded-[10px] bg-white text-white font-dm-sans-500 text-sm"
               >
                 View All Products
               </button>
